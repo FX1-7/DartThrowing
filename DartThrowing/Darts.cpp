@@ -9,83 +9,155 @@ using namespace std;
 
 class Player {
 public:
-	double Darts_thrown = 0;
-	double Bulls_hit = 0;
-	int Hit_Chance = 0;
+	int Round_Darts_thrown = 0;
+	int Total_Darts_thrown = 0;
+	int Bulls_hit = 0;
+	int Success_rate = 0;
+	double Sim_Average = 0;
+
+	bool Throw(int S_rate) {
+		srand(time(0));
+		int roll = 0;
+		roll = rand() % 100 + 1;
+		if (roll <= S_rate) {
+			roll = 0;
+			return true;
+		}
+		else {
+			roll = 0;
+			return false;
+		}
+	}
 };
 
 
-bool Throw() {
-	srand(time(0));
-	int roll = 0;
-	roll = rand() % 100 + 1;
-	if (roll >= 70) {
-		roll = 0;
-		return true;
-	}
-	else if (roll < 70) {
-		roll = 0;
-		return false;
-	}
-}
-
-double Simulate(int NumOfSimulate) {
-	Player a;
-	bool sim_result;
-	double calc_result;
+string Simulate(int NumOfSimulate) {
+	Player Joe;
+	Player Sid;
+	Player func;
+	string Winner;
+	bool Throwing;
 	do {
-		SleepSec;
-		sim_result = Throw();
-		if (sim_result == true) {
-			a.Bulls_hit = a.Bulls_hit + 1;
-			a.Darts_thrown = a.Darts_thrown + 1;
-		}
-		else if (sim_result == false) {
-			a.Darts_thrown = a.Darts_thrown + 1;
-		}
-		NumOfSimulate = NumOfSimulate - 1;
-	} while (NumOfSimulate > 0);
-	if (a.Bulls_hit == 0) {
-		return 0;
+		do {
+			SleepSec;
+			Throwing = func.Throw(Joe.Success_rate);
+			if (Throwing == true) {
+				Joe.Bulls_hit = Joe.Bulls_hit + 1;
+				Joe.Round_Darts_thrown = Joe.Round_Darts_thrown + 1;
+			}
+			else if (Throwing == false) {
+				Joe.Round_Darts_thrown = Joe.Round_Darts_thrown + 1;
+			}
+		} while (Joe.Round_Darts_thrown != 3);
+		cout << "Joe has thrown 3 darts and hit " << Joe.Bulls_hit << " bullseyes" << endl;
+		Joe.Total_Darts_thrown = Joe.Total_Darts_thrown + Joe.Round_Darts_thrown;
+		Joe.Round_Darts_thrown = 0;
+			do {
+				SleepSec;
+				Throwing = func.Throw(Sid.Success_rate);
+				if (Throwing == true) {
+					Sid.Bulls_hit = Sid.Bulls_hit + 1;
+					Sid.Round_Darts_thrown = Sid.Round_Darts_thrown + 1;
+				}
+				else if (Throwing == false) {
+					Sid.Round_Darts_thrown = Sid.Round_Darts_thrown + 1;
+				}
+			} while (Sid.Round_Darts_thrown != 3);
+			cout << "Sid has thrown 3 darts and hit " << Sid.Bulls_hit << " bullseyes" << endl;
+			Sid.Total_Darts_thrown = Sid.Total_Darts_thrown + Sid.Round_Darts_thrown;
+			Sid.Round_Darts_thrown = 0;
+	} while (Sid.Bulls_hit < 10 || Joe.Bulls_hit < 10);
+
+	if (Sid.Bulls_hit != 0 && Joe.Bulls_hit != 0) {
+		Joe.Sim_Average = ((double) Joe.Total_Darts_thrown) / Joe.Bulls_hit;
+		Sid.Sim_Average = ((double) Sid.Total_Darts_thrown) / Sid.Bulls_hit;
 	}
 	else {
-		calc_result = a.Darts_thrown / a.Bulls_hit;
-		return calc_result;
+		;
 	}
+
+	if (Sid.Bulls_hit > Joe.Bulls_hit) {
+		Winner = "Sid";
+	}
+	else if (Joe.Bulls_hit > Sid.Bulls_hit) {
+		Winner = "Joe";
+	}
+	else {
+		Winner = "Tie";
+	}
+	return Winner;
+
 }
 
 int main() {
 	Player Joe;
 	Player Sid;
+	Player func;
+	string Winner;
 	bool Throwing;
 	int Choice;
-	double sim_results;
 
+	cout << "Please enter the Success Rate for Joe:" << endl;
+	cin >> Joe.Success_rate;
+	cout << endl << "Please enter the Success Rate for Sid:" << endl;
+	cin >> Sid.Success_rate;
 
 	cout << "Simulating.. Please wait..." << endl;
 	std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 	system("CLS");
 
-
 	do {
-		SleepSec;
-		Throwing = Throw();
-		if (Throwing == true){
-			Joe.Bulls_hit = Joe.Bulls_hit + 1;
-			Joe.Darts_thrown = Joe.Darts_thrown + 1;
-		}
-		else if (Throwing == false) {
-			Joe.Darts_thrown = Joe.Darts_thrown + 1;
-		}
-	} while (Joe.Bulls_hit < 10);
-	cout << "It took " << Joe.Darts_thrown << " Throws to hit the bull 10 times" << endl;
+		do {
+			SleepSec;
+			Throwing = func.Throw(Joe.Success_rate);
+			if (Throwing == true) {
+				Joe.Bulls_hit = Joe.Bulls_hit + 1;
+				Joe.Round_Darts_thrown = Joe.Round_Darts_thrown + 1;
+			}
+			else if (Throwing == false) {
+				Joe.Round_Darts_thrown = Joe.Round_Darts_thrown + 1;
+			}
+		} while (Joe.Round_Darts_thrown != 3);
+		cout << "Joe has thrown 3 darts and hit " << Joe.Bulls_hit << " bullseyes" << endl;
+		Joe.Total_Darts_thrown = Joe.Total_Darts_thrown + Joe.Round_Darts_thrown;
+		Joe.Round_Darts_thrown = 0;
+		do {
+			SleepSec;
+			Throwing = func.Throw(Sid.Success_rate);
+			if (Throwing == true) {
+				Sid.Bulls_hit = Sid.Bulls_hit + 1;
+				Sid.Round_Darts_thrown = Sid.Round_Darts_thrown + 1;
+			}
+			else if (Throwing == false) {
+				Sid.Round_Darts_thrown = Sid.Round_Darts_thrown + 1;
+			}
+		} while (Sid.Round_Darts_thrown != 3);
+		cout << "Sid has thrown 3 darts and hit " << Sid.Bulls_hit << " bullseyes in total" << endl;
+		cout << "Next round!" << endl;
+		cout << endl;
+		Sid.Total_Darts_thrown = Sid.Total_Darts_thrown + Sid.Round_Darts_thrown;
+		Sid.Round_Darts_thrown = 0;
+	} while ((Sid.Bulls_hit < 10) || (Joe.Bulls_hit < 10));
 
 
+	if (Sid.Bulls_hit > Joe.Bulls_hit) {
+		Winner = "Sid";
+	}
+	else if (Joe.Bulls_hit > Sid.Bulls_hit) {
+		Winner = "Joe";
+	}
+	else {
+		Winner = "Tie";
+	}
+	
+	cout << "The winner is " << Winner << endl;
 	cout << "Would you like to simulate a game? If so, please enter a number, if not: please enter 0." << endl;
 	cin >> Choice;
 	if (Choice > 0) {
-		sim_results = Simulate(Choice);
-		cout << sim_results << endl;
+		Simulate(Choice);
+		cout << "The average hit % of each person is as follows:" << endl;
+		cout << "Joe: " << Joe.Sim_Average << "%" << endl;
+		cout << "Sid: " << Sid.Sim_Average << "%" << endl;
 	}
 
 
